@@ -1,0 +1,40 @@
+-- Tastenmappings
+local map = vim.keymap.set
+
+-- jk als ESC
+map("i", "jk", "<Esc>")
+
+-- Bewegung auf sichtbaren Zeilen
+map("n", "j", "gj")
+map("n", "k", "gk")
+
+-- Fensternavigation
+map("n", "<C-h>", "<C-w>h")
+map("n", "<C-j>", "<C-w>j")
+map("n", "<C-k>", "<C-w>k")
+map("n", "<C-l>", "<C-w>l")
+
+-- Suche löschen
+map("n", "<leader><space>", ":nohlsearch<CR>")
+
+-- Speichern / Schließen
+map("n", "<leader>w", ":w<CR>")
+map("n", "<leader>q", ":bd<CR>")
+
+-- Zwischenablage
+map("n", "<leader>x", '"+')
+
+-- Buffer wechseln
+map("n", "<leader><Tab>", ":b#<CR>")
+
+-- Splits
+map("n", "<leader>vs", "<C-w>v<C-w>l")
+map("n", "<leader>M", ":tab split<CR>")
+
+-- Session
+map("n", "<leader>s", ":mksession<CR>")
+
+-- Dateien öffnen
+map("n", "<leader>e", ':e <C-R>=expand("%:p:h") . "/" <CR>')
+map("n", "<leader>t", ':tabe <C-R>=expand("%:p:h") . "/" <CR>')
+map("n", "<leader>v", ':vsplit <C-R>=expand("%:p:h") . "/" <CR>')
