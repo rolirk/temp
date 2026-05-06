@@ -1,7 +1,3 @@
 # Diese Datei wird nicht mehr verwendet!
 # Die aktive Konfiguration liegt unter:
-# /home/ro/nixos-config/
-#
-# Rebuild mit:
-# cd /home/ro/nixos-config
-# sudo nixos-rebuild switch --flake .#ro-x230
+
