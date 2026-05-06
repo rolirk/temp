@@ -1,5 +1,8 @@
-nix.gc = {
-  automatic = true;
-  dates = "weekly";
-  options = "--delete-older-than 30d";
+imports = [
+  ./hardware-configuration.nix
+  <home-manager/nixos>
+];
+
+home-manager.users.DEINUSERNAME = { pkgs, ... }: {
+  home.stateVersion = "24.11";
 };
