@@ -1,33 +1,7 @@
-valuation warning: The default value of `programs.neovim.withRuby` has changed from `true` to `false`.
-                    You are currently using the legacy default (`true`) because `home.stateVersion` is less than "26.05".
-                    To silence this warning and keep legacy behavior, set:
-                      programs.neovim.withRuby = true;
-                    To adopt the new default behavior, set:
-                      programs.neovim.withRuby = false;
-evaluation warning: The default value of `programs.neovim.withPython3` has changed from `true` to `false`.
-                    You are currently using the legacy default (`true`) because `home.stateVersion` is less than "26.05".
-                    To silence this warning and keep legacy behavior, set:
-                      programs.neovim.withPython3 = true;
-                    To adopt the new default behavior, set:
-                      programs.neovim.withPython3 = false;
-evaluation warning: ro profile: The option `programs.neovim.extraLuaConfig' defined in `/nix/store/mah5a1nfnyj2hnjbg110rmrp9fkk1kll-source/configuration.nix' has been renamed to `programs.neovim.initLua'.
-evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/mah5a1nfnyj2hnjbg110rmrp9fkk1kll-source/configuration.nix' has been renamed to `services.desktopManager.gnome.enable'.
-evaluation warning: The option `services.xserver.displayManager.gdm.enable' defined in `/nix/store/mah5a1nfnyj2hnjbg110rmrp9fkk1kll-source/configuration.nix' has been renamed to `services.displayManager.gdm.enable'.error:
-       … while calling the 'seq' builtin
-         at /nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/lib/modules.nix:402:18:
-          401|         options = checked options;
-          402|         config = checked (removeAttrs config [ "_module" ]);
-             |                  ^
-          403|         _module = checked (config._module);
-
-       … while evaluating a branch condition
-         at /nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/lib/modules.nix:305:9:
-          304|       checkUnmatched =
-          305|         if config._module.check && config._module.freeformType == null && merged.unmatchedDefns != [ ] then
-             |         ^
-          306|           let
-
-       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
-
-       error: cannot look up '<home-manager/nixos>' in pure evaluation mode (use '--impure' to override)
-Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '.#nixosConfigurations."ro-x230".config.system.build.nixos-rebuild' --no-link' returned non-zero exit status 1.
+# Diese Datei wird nicht mehr verwendet!
+# Die aktive Konfiguration liegt unter:
+# /home/ro/nixos-config/
+#
+# Rebuild mit:
+# cd /home/ro/nixos-config
+# sudo nixos-rebuild switch --flake .#ro-x230
