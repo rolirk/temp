@@ -1,4 +1,18 @@
-error:
+valuation warning: The default value of `programs.neovim.withRuby` has changed from `true` to `false`.
+                    You are currently using the legacy default (`true`) because `home.stateVersion` is less than "26.05".
+                    To silence this warning and keep legacy behavior, set:
+                      programs.neovim.withRuby = true;
+                    To adopt the new default behavior, set:
+                      programs.neovim.withRuby = false;
+evaluation warning: The default value of `programs.neovim.withPython3` has changed from `true` to `false`.
+                    You are currently using the legacy default (`true`) because `home.stateVersion` is less than "26.05".
+                    To silence this warning and keep legacy behavior, set:
+                      programs.neovim.withPython3 = true;
+                    To adopt the new default behavior, set:
+                      programs.neovim.withPython3 = false;
+evaluation warning: ro profile: The option `programs.neovim.extraLuaConfig' defined in `/nix/store/mah5a1nfnyj2hnjbg110rmrp9fkk1kll-source/configuration.nix' has been renamed to `programs.neovim.initLua'.
+evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/mah5a1nfnyj2hnjbg110rmrp9fkk1kll-source/configuration.nix' has been renamed to `services.desktopManager.gnome.enable'.
+evaluation warning: The option `services.xserver.displayManager.gdm.enable' defined in `/nix/store/mah5a1nfnyj2hnjbg110rmrp9fkk1kll-source/configuration.nix' has been renamed to `services.displayManager.gdm.enable'.error:
        … while calling the 'seq' builtin
          at /nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/lib/modules.nix:402:18:
           401|         options = checked options;
