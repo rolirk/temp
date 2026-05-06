@@ -1,36 +1,40 @@
+sudo nixos-rebuild switch --flake /home/ro/nixos-config#ro-x230
+Wischen Sie mit Ihrem rechten Zeigefinger über den Fingerabdruckleser
 building the system configuration...
-Checking switch inhibitors... done
-updating GRUB 2 menu...
-Warning: os-prober will be executed to detect other bootable partitions.
-Its output will be used to detect bootable binaries on them and create new boot entries.
-lsblk: /dev/mapper/no*[0-9]: Datei oder Verzeichnis nicht gefunden
-lsblk: /dev/mapper/raid*[0-9]: Datei oder Verzeichnis nicht gefunden
-lsblk: /dev/mapper/disks*[0-9]: Datei oder Verzeichnis nicht gefunden
-activating the configuration...
-setting up /etc...
-reloading user units for ro...
-restarting sysinit-reactivation.target
-the following new units were started: NetworkManager-dispatcher.service
-warning: the following units failed: home-manager-ro.service
-× home-manager-ro.service - Home Manager environment for ro
-     Loaded: loaded (/etc/systemd/system/home-manager-ro.service; enabled; preset: ignored)
-     Active: failed (Result: exit-code) since Wed 2026-05-06 14:33:31 CEST; 282ms ago
- Invocation: 9db9feb87e6f4aafbc5358a4ff5d3575
-    Process: 99455 ExecStart=/nix/store/wzc6y7xbcb6n0xynw46yvr1b7zpzalrk-hm-setup-env /nix/store/ikbyq2w61nnzdkw41850xlxq0x0f5pkr-home-manager-generation (code=exited, status=1/FAILURE)
-   Main PID: 99455 (code=exited, status=1/FAILURE)
-         IP: 0B in, 0B out
-         IO: 0B read, 0B written
-   Mem peak: 7.1M
-        CPU: 156ms
+error:
+       … while calling the 'derivationStrict' builtin
+         at «nix-internal»/derivation-internal.nix:37:12:
+           36|
+           37|   strict = derivationStrict drvAttrs;
+             |            ^
+           38|
 
-Mai 06 14:33:31 nixos hm-activate-ro[99493]: - In standalone mode, use 'home-manager switch -b backup' to back up files automatically.
-Mai 06 14:33:31 nixos hm-activate-ro[99493]: - When used as a NixOS or nix-darwin module, set either
-Mai 06 14:33:31 nixos hm-activate-ro[99493]:   - 'home-manager.backupFileExtension', or
-Mai 06 14:33:31 nixos hm-activate-ro[99493]:   - 'home-manager.backupCommand',
-Mai 06 14:33:31 nixos hm-activate-ro[99493]:   to move the file to a new location in the same directory, or run a custom command.
-Mai 06 14:33:31 nixos hm-activate-ro[99493]: - Set 'force = true' on the related file options to forcefully overwrite the files below. eg. 'xdg.configFile."mimeapps.list".force = true'
-Mai 06 14:33:31 nixos hm-activate-ro[99493]: Existing file '/home/ro/.config/nvim/init.lua' would be clobbered
-Mai 06 14:33:31 nixos systemd[1]: home-manager-ro.service: Main process exited, code=exited, status=1/FAILURE
-Mai 06 14:33:31 nixos systemd[1]: home-manager-ro.service: Failed with result 'exit-code'.
-Mai 06 14:33:31 nixos systemd[1]: Failed to start Home Manager environment for ro.
-Command 'systemd-run -E LOCALE_ARCHIVE -E NIXOS_INSTALL_BOOTLOADER -E NIXOS_NO_CHECK --collect --no-ask-password --pipe --quiet --service-type=exec --unit=nixos-rebuild-switch-to-configuration /nix/store/7x2d4hzfjymm5902wqck0wphvcikygnh-nixos-system-nixos-26.05.20260505.549bd84/bin/switch-to-configuration switch' returned non-zero exit status 4.
+       … while evaluating derivation 'nixos-system-nixos-26.05.20260505.549bd84'
+         whose name attribute is located at «github:NixOS/nixpkgs/549bd84d6279f9852cae6225e372cc67fb91a4c1?narHash=sha256-hGdgeU2Nk87RAuZyYjyDjFL6LK7dAZN5RE9%2BhrDTkDU%3D»/pkgs/stdenv/generic/make-derivation.nix:535:11
+
+       … while evaluating attribute 'buildCommand' of derivation 'nixos-system-nixos-26.05.20260505.549bd84'
+         at «github:NixOS/nixpkgs/549bd84d6279f9852cae6225e372cc67fb91a4c1?narHash=sha256-hGdgeU2Nk87RAuZyYjyDjFL6LK7dAZN5RE9%2BhrDTkDU%3D»/nixos/modules/system/activation/top-level.nix:64:7:
+           63|       passAsFile = [ "extraDependencies" ];
+           64|       buildCommand = systemBuilder;
+             |       ^
+           65|
+
+       … while evaluating the option `environment.etc."pam.d/login".source':
+
+       … while evaluating definitions from `/nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/nixos/modules/security/pam.nix':
+
+       … while evaluating the option `security.pam.services.login.text':
+
+       … while evaluating the option `security.pam.services.login.rules.auth.fprintd.enable':
+
+       … while evaluating definitions from `/nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/nixos/modules/security/pam.nix':
+
+       … while evaluating the option `security.pam.services.login.fprintAuth':
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: The option `security.pam.services.login.fprintAuth' has conflicting definition values:
+       - In `/nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/nixos/modules/services/display-managers/gdm.nix': false
+       - In `/nix/store/b5hxq34dc3qy8jzgvjw44pk9pxcvlqyj-source/configuration.nix': true
+       Use `lib.mkForce value` or `lib.mkDefault value` to change the priority on any of these definitions.
+Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/ro/nixos-config#nixosConfigurations."ro-x230".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
