@@ -1,4 +1,5 @@
--- Undo/Backup/Swap
-vim.opt.undodir = vim.fn.expand("~/.local/share/nvim/undo//")
-vim.opt.backupdir = vim.fn.expand("~/.local/share/nvim/backup//")
-vim.opt.directory = vim.fn.expand("~/.local/share/nvim/swap//")
+nix.gc = {
+  automatic = true;
+  dates = "weekly";
+  options = "--delete-older-than 30d";
+};
