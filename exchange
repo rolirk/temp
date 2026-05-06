@@ -1,40 +1,11 @@
-sudo nixos-rebuild switch --flake /home/ro/nixos-config#ro-x230
-Wischen Sie mit Ihrem rechten Zeigefinger über den Fingerabdruckleser
-building the system configuration...
-error:
-       … while calling the 'derivationStrict' builtin
-         at «nix-internal»/derivation-internal.nix:37:12:
-           36|
-           37|   strict = derivationStrict drvAttrs;
-             |            ^
-           38|
-
-       … while evaluating derivation 'nixos-system-nixos-26.05.20260505.549bd84'
-         whose name attribute is located at «github:NixOS/nixpkgs/549bd84d6279f9852cae6225e372cc67fb91a4c1?narHash=sha256-hGdgeU2Nk87RAuZyYjyDjFL6LK7dAZN5RE9%2BhrDTkDU%3D»/pkgs/stdenv/generic/make-derivation.nix:535:11
-
-       … while evaluating attribute 'buildCommand' of derivation 'nixos-system-nixos-26.05.20260505.549bd84'
-         at «github:NixOS/nixpkgs/549bd84d6279f9852cae6225e372cc67fb91a4c1?narHash=sha256-hGdgeU2Nk87RAuZyYjyDjFL6LK7dAZN5RE9%2BhrDTkDU%3D»/nixos/modules/system/activation/top-level.nix:64:7:
-           63|       passAsFile = [ "extraDependencies" ];
-           64|       buildCommand = systemBuilder;
-             |       ^
-           65|
-
-       … while evaluating the option `environment.etc."pam.d/login".source':
-
-       … while evaluating definitions from `/nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/nixos/modules/security/pam.nix':
-
-       … while evaluating the option `security.pam.services.login.text':
-
-       … while evaluating the option `security.pam.services.login.rules.auth.fprintd.enable':
-
-       … while evaluating definitions from `/nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/nixos/modules/security/pam.nix':
-
-       … while evaluating the option `security.pam.services.login.fprintAuth':
-
-       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
-
-       error: The option `security.pam.services.login.fprintAuth' has conflicting definition values:
-       - In `/nix/store/h9wn92hv33sizprch7fcp16lfs1k3w5j-source/nixos/modules/services/display-managers/gdm.nix': false
-       - In `/nix/store/b5hxq34dc3qy8jzgvjw44pk9pxcvlqyj-source/configuration.nix': true
-       Use `lib.mkForce value` or `lib.mkDefault value` to change the priority on any of these definitions.
-Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/ro/nixos-config#nixosConfigurations."ro-x230".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
+# Aktiviert den Interception-Tools Dienst
+  services.interception-tools = {
+    enable = true;
+    plugins = [ pkgs.interception-tools-plugins.caps2esc ];
+    udevmonConfig = ''
+      - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
+        DEVICE:
+          EVENTS:
+            EV_KEY: [KEY_CAPSLOCK, KEY_ESC]
+    '';
+  };
