@@ -1,4 +1,38 @@
-Error in /home/ro/.config/nvim/init.lua:                                                                                                               
-E5113: Lua chunk: /home/ro/.config/nvim/init.lua:143: attempt to call a nil value                                                                      
-stack traceback:                                                                                                                                       
-        /home/ro/.config/nvim/init.lua:143: in main chunk  
+-- Wir nutzen die sicherere Variante für Keymaps
+vim.api.nvim_set_keymap('n', '<leader>p', '', {
+    callback = function()
+        local file = vim.fn.expand('%')
+        local out = vim.fn.expand('%:r') .. '.html'
+        
+        -- Sicherer Zugriff auf die USER Variable
+        local user = os.getenv("USER") or "ro"
+        local local_reveal = vim.fn.getcwd() .. "/reveal.js"
+        local nix_reveal = "/etc/profiles/per-user/" .. user .. "/share/revealjs"
+        local reveal_url = ""
+
+        -- Prüfen welcher Pfad existiert
+        if vim.fn.isdirectory(local_reveal) == 1 then
+            reveal_url = "./reveal.js"
+            print("Status: Nutze lokales reveal.js")
+        elseif vim.fn.isdirectory(nix_reveal) == 1 then
+            reveal_url = nix_reveal
+            print("Status: Nutze Nix reveal.js")
+        else
+            reveal_url = "https://unpkg.com/reveal.js/"
+            print("Status: Nutze Online-Quelle (CDN)")
+        end
+
+        -- Pandoc Kommando
+        local cmd = "pandoc -t revealjs --standalone --embed-resources --resource-path=. " ..
+                    "-V revealjs-url=" .. reveal_url .. " -o " .. out .. " " .. file
+
+        print("Generiere Slides...")
+        os.execute(cmd) -- os.execute ist oft stabiler als vim.fn.system für Shell-Befehle
+        
+        -- Öffnen
+        os.execute("xdg-open " .. out .. " &")
+    end,
+    noremap = true,
+    silent = true,
+    desc = "Build Reveal.js Slides"
+})
