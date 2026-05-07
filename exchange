@@ -1,19 +1,35 @@
 vim.keymap.set('n', '<leader>p', function()
-  local file = vim.fn.expand('%')
-  local out = vim.fn.expand('%:r') .. '.html'
-  -- Pfad zu den Reveal-Assets aus deiner Nix-Config
-  local reveal_url = "/etc/profiles/per-user/" .. os.getenv("USER") .. "/share/reveal.js"
-  
-  -- Pandoc Befehl:
-  -- --embed-resources macht die Datei komplett unabhängig (Bilder/JS wandern ins HTML)
-  -- --standalone erzeugt ein komplettes Dokument
-  local cmd = string.format(
-    "pandoc -t revealjs --standalone --embed-resources --resource-path=. " ..
-    "-V revealjs-url=%s -o %s %s",
-    reveal_url, out, file
-  )
+    local file = vim.fn.expand('%') -- Die aktuelle .md Datei
+    local out = vim.fn.expand('%:r') .. '.html'
+    
+    -- 1. Suche nach reveal.js (lokal im Ordner oder global)
+    local local_reveal = vim.fn.getcwd() .. "/reveal.js"
+    local nix_reveal = "/etc/profiles/per-user/" .. os.getenv("USER") .. "/share/revealjs"
+    local reveal_url = ""
 
-  print("Baue Slides...")
-  vim.fn.system(cmd)
-  vim.cmd('silent !xdg-open ' .. out)
-end, { desc = "Build Reveal.js Slides (Offline & Embedded)" })
+    if vim.fn.isdirectory(local_reveal) == 1 then
+        reveal_url = "./reveal.js" -- Nutze den lokalen Ordner
+        print("Nutze lokales reveal.js...")
+    elseif vim.fn.isdirectory(nix_reveal) == 1 then
+        reveal_url = nix_reveal -- Nutze Nix-Installation
+        print("Nutze Nix reveal.js...")
+    else
+        reveal_url = "https://unpkg.com/reveal.js/" -- Fallback auf Internet
+        print("Kein lokales reveal.js gefunden, nutze Online-Quelle...")
+    end
+
+    -- 2. Pandoc Befehl zusammenbauen
+    -- --embed-resources packt alles in eine Datei (Bilder, JS, CSS)
+    local cmd = string.format(
+        "pandoc -t revealjs --standalone --embed-resources --resource-path=. " ..
+        "-V revealjs-url=%s -o '%s' '%s'",
+        reveal_url, out, file
+    )
+
+    -- 3. Ausführen
+    print("Präsentation wird generiert...")
+    vim.fn.system(cmd)
+    
+    -- 4. Öffnen (unter GNOME/NixOS meist xdg-open)
+    vim.cmd('silent !xdg-open ' .. out)
+end, { desc = "Build Reveal.js Slides" })
