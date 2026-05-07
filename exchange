@@ -1,11 +1,19 @@
-# Aktiviert den Interception-Tools Dienst
-  services.interception-tools = {
-    enable = true;
-    plugins = [ pkgs.interception-tools-plugins.caps2esc ];
-    udevmonConfig = ''
-      - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
-        DEVICE:
-          EVENTS:
-            EV_KEY: [KEY_CAPSLOCK, KEY_ESC]
-    '';
-  };
+vim.keymap.set('n', '<leader>p', function()
+  local file = vim.fn.expand('%')
+  local out = vim.fn.expand('%:r') .. '.html'
+  -- Pfad zu den Reveal-Assets aus deiner Nix-Config
+  local reveal_url = "/etc/profiles/per-user/" .. os.getenv("USER") .. "/share/reveal.js"
+  
+  -- Pandoc Befehl:
+  -- --embed-resources macht die Datei komplett unabhängig (Bilder/JS wandern ins HTML)
+  -- --standalone erzeugt ein komplettes Dokument
+  local cmd = string.format(
+    "pandoc -t revealjs --standalone --embed-resources --resource-path=. " ..
+    "-V revealjs-url=%s -o %s %s",
+    reveal_url, out, file
+  )
+
+  print("Baue Slides...")
+  vim.fn.system(cmd)
+  vim.cmd('silent !xdg-open ' .. out)
+end, { desc = "Build Reveal.js Slides (Offline & Embedded)" })
