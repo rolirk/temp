@@ -1,1 +1,25 @@
-wget https://raw.githubusercontent.com/hakimel/reveal.js/master/plugin/notes/notes.js -O ~/reveal.js/plugin/notes/notes.js
+Failed to source `/home/ro/.local/share/nvim/lazy/telescope.nvim/plugin/telescope.lua`
+                                                                                                                                                                 
+vim/_editor.lua:431: /home/ro/.config/nvim/init.lua..nvim_exec2() called at /home/ro/.config/nvim/init.lua:0../home/ro/.local/share/nvim/lazy/telescope.nvim/plug
+in/telescope.lua: Vim(source):E5113: Error while calling lua chunk: ...ocal/share/nvim/lazy/telescope.nvim/plugin/telescope.lua:2: Telescope.nvim requires at lea
+st nvim-0.11.                                                                                                                                                    
+stack traceback:                                                                                                                                                 
+^I[C]: in function 'error'                                                                                                                                       
+^I...ocal/share/nvim/lazy/telescope.nvim/plugin/telescope.lua:2: in main chunk                                                                                   
+^I[C]: in function 'nvim_exec2'                                                                                                                                  
+^Ivim/_editor.lua:431: in function 'cmd'                                                                                                                         
+^I...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:510: in function <...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:509>                 
+^I[C]: in function 'xpcall'                                                                                                                                      
+^I.../.local/share/nvim/lazy/lazy.nvim/lua/lazy/core/util.lua:135: in function 'try'                                                                             
+^I...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:509: in function 'source'                                                                          
+^I...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:457: in function 'source_runtime'                                                                  
+^I...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:425: in function 'packadd'                                                                         
+^I...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:359: in function '_load'                                                                           
+^I...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:197: in function 'load'                                                                            
+^I...local/share/nvim/lazy/lazy.nvim/lua/lazy/core/loader.lua:127: in function 'startup'                                                                         
+^I/home/ro/.local/share/nvim/lazy/lazy.nvim/lua/lazy/init.lua:112: in function 'setup'                                                                           
+^I/home/ro/.config/nvim/init.lua:22: in main chunk                                                                                                               
+                                                                                                                                                                 
+# stacktrace:                                                                                                                                                    
+  - vim/_editor.lua:431 _in_ **cmd**                                                                                                                             
+  - .config/nvim/init.lua:22                
