@@ -1,3 +1,106 @@
+-- ============================================================
+-- lazy.nvim bootstrap
+-- ============================================================
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git", "clone", "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- ============================================================
+-- Plugins
+-- ============================================================
+require("lazy").setup({
+
+  -- Colorscheme
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    config = function()
+      require("gruvbox").setup({
+        contrast = "hard",
+        italic = {
+          strings   = false,
+          comments  = true,
+          operators = false,
+          folds     = true,
+        },
+      })
+      vim.cmd("colorscheme gruvbox")
+    end,
+  },
+
+  -- Statusline
+  {
+    "nvim-lualine/lualine.nvim",
+    config = function()
+      require("lualine").setup({
+        options = {
+          theme                = "gruvbox",
+          section_separators   = "",
+          component_separators = "|",
+          globalstatus         = true,
+        },
+        sections = {
+          lualine_a = { "mode" },
+          lualine_b = { "filename" },
+          lualine_c = { "branch" },
+          lualine_x = { "filetype" },
+          lualine_y = { "progress" },
+          lualine_z = { "location" },
+        },
+      })
+    end,
+  },
+
+  -- Fokus-Schreiben
+  { "junegunn/goyo.vim" },
+  { "junegunn/limelight.vim" },
+  { "reedes/vim-pencil" },
+
+  -- Pandoc
+  { "vim-pandoc/vim-pandoc" },
+  { "vim-pandoc/vim-pandoc-syntax" },
+
+  -- Swap-Dateien sauber handhaben
+  { "gioele/vim-autoswap" },
+
+  -- Telescope
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("telescope").setup({
+        defaults = {
+          layout_strategy  = "horizontal",
+          sorting_strategy = "ascending",
+          layout_config    = { prompt_position = "top" },
+        },
+      })
+    end,
+  },
+
+-- LSP: LTeX für Deutsch (Grammatik + Rechtschreibung)
+{
+  "neovim/nvim-lspconfig",
+  config = function()
+    vim.lsp.config("ltex", {
+      settings = {
+        ltex = {
+          language   = "de-DE",
+          dictionary = { ["de-DE"] = {} },
+        },
+      },
+    })
+    vim.lsp.enable("ltex")
+  end,
+},
+
+-- RevealJS und pandoc
 vim.keymap.set('n', '<leader>p', function()
     local file = vim.fn.expand('%')
     local out = vim.fn.expand('%:r') .. '.html'
@@ -11,3 +114,161 @@ vim.keymap.set('n', '<leader>p', function()
     print("Präsentation wird erstellt...")
     os.execute(cmd)
 end, { desc = "Build Presentation" })
+
+  -- Completion
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-path",     -- Pfad-Autovervollständigung
+      "hrsh7th/cmp-buffer",   -- Wörter aus dem Buffer
+      "hrsh7th/cmp-nvim-lsp", -- LTeX-Vorschläge
+    },
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup({
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "buffer" },
+          { name = "path" },
+        }),
+        mapping = cmp.mapping.preset.insert({
+          ["<Tab>"]   = cmp.mapping.select_next_item(),
+          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+          ["<CR>"]    = cmp.mapping.confirm({ select = true }),
+          ["<C-e>"]   = cmp.mapping.abort(),
+        }),
+      })
+    end,
+  },
+
+})
+
+-- ============================================================
+-- Grundeinstellungen
+-- ============================================================
+vim.opt.number         = true
+vim.opt.relativenumber = true
+vim.opt.cursorline     = true
+vim.opt.wrap           = true
+vim.opt.linebreak      = true
+vim.opt.textwidth      = 79
+vim.opt.colorcolumn    = "80"
+vim.opt.encoding       = "utf-8"
+vim.opt.hidden         = true
+vim.opt.history        = 1000
+vim.opt.undolevels     = 1000
+vim.opt.undofile       = true
+vim.opt.ignorecase     = true
+vim.opt.smartcase      = true
+vim.opt.hlsearch       = true
+vim.opt.incsearch      = true
+vim.opt.splitbelow     = true
+vim.opt.splitright     = true
+vim.opt.visualbell     = true
+vim.opt.title          = true
+vim.opt.titlestring    = "%t"
+vim.opt.autoindent     = true
+vim.opt.copyindent     = true
+vim.opt.wildmenu       = true
+vim.opt.showmatch      = true
+vim.opt.background     = "dark"
+vim.opt.spell 	      = true
+vim.opt.spelllang      = { "de_de" }
+
+-- Folding deaktivieren
+vim.opt.foldenable            = false
+vim.g["pandoc#folding#folds"] = 0
+
+-- Undo/Backup/Swap Verzeichnisse
+vim.opt.undodir   = vim.fn.expand("~/.local/share/nvim/undo//")
+vim.opt.backupdir = vim.fn.expand("~/.local/share/nvim/backup//")
+vim.opt.directory = vim.fn.expand("~/.local/share/nvim/swap//")
+
+-- ============================================================
+-- Leader
+-- ============================================================
+vim.g.mapleader = " "
+
+-- ============================================================
+-- Tastenmappings
+-- ============================================================
+local map = vim.keymap.set
+
+--Korrekturvorschläge 
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
+
+-- jk als ESC
+map("i", "jk", "<Esc>")
+
+-- Bewegung auf sichtbaren Zeilen (wichtig bei wrap)
+map("n", "j", "gj")
+map("n", "k", "gk")
+
+-- Fensternavigation
+map("n", "<C-h>", "<C-w>h")
+map("n", "<C-j>", "<C-w>j")
+map("n", "<C-k>", "<C-w>k")
+map("n", "<C-l>", "<C-w>l")
+
+-- Suche löschen
+map("n", "<leader><space>", ":nohlsearch<CR>")
+
+-- Speichern / Buffer schließen
+map("n", "<leader>w", ":w<CR>")
+map("n", "<leader>q", ":bd<CR>")
+
+-- Zwischenablage
+map("n", "<leader>x", '"+')
+
+-- Buffer wechseln
+map("n", "<leader><Tab>", ":b#<CR>")
+
+-- Splits
+map("n", "<leader>vs", "<C-w>v<C-w>l")
+map("n", "<leader>M",  ":tab split<CR>")
+
+-- Session speichern
+map("n", "<leader>s", ":mksession<CR>")
+
+-- Telescope
+map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Dateien suchen" })
+map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>",  { desc = "Text suchen" })
+map("n", "<leader>fb", "<cmd>Telescope buffers<CR>",    { desc = "Buffer auswählen" })
+map("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>",   { desc = "Zuletzt geöffnet" })
+
+-- Fokus-Modi
+map("n", "<leader>go", ":Goyo<CR>",         { desc = "Goyo ein/aus" })
+map("n", "<leader>pe", ":PencilToggle<CR>", { desc = "Pencil ein/aus" })
+map("n", "<leader>fo", ":PencilToggle<CR>", { desc = "Pencil ein/aus" })
+
+-- Fokus-Toggle: Goyo + Pencil + Scrolloff
+local fokus_aktiv = false
+map("n", "<leader>fo", function()
+  if fokus_aktiv then
+    vim.cmd("Goyo!")
+    vim.cmd("PencilOff")
+    vim.opt.scrolloff  = 0
+    vim.opt.signcolumn = "auto"
+    fokus_aktiv = false
+  else
+    vim.cmd("Goyo")
+    vim.cmd("PencilToggle")
+    vim.opt.scrolloff  = 999
+    vim.opt.signcolumn = "no"
+    fokus_aktiv = true
+  end
+end, { desc = "Fokus-Modus ein/aus" })
+
+-- ============================================================
+-- Goyo + Limelight automatisch koppeln
+-- ============================================================
+vim.api.nvim_create_autocmd("User", {
+  pattern = "GoyoEnter",
+  command = "Limelight",
+})
+vim.api.nvim_create_autocmd("User", {
+  pattern = "GoyoLeave",
+  command = "Limelight!",
+})
+
+vim.g.limelight_conceal_ctermfg = "gray"
