@@ -1,4 +1,13 @@
-Error in /home/ro/.config/nvim/init.lua:                                                                                                               
-E5113: Lua chunk: /home/ro/.config/nvim/init.lua:109: attempt to call a nil value                                                                      
-stack traceback:                                                                                                                                       
-        /home/ro/.config/nvim/init.lua:109: in main chunk     
+vim.keymap.set('n', '<leader>p', function()
+    local file = vim.fn.expand('%')
+    local out = vim.fn.expand('%:r') .. '.html'
+    -- Wir nutzen den absolut sicheren Pfad zum Ordner, den du gerade geklont hast
+    local cmd = string.format(
+        "pandoc -t revealjs -s --embed-resources --resource-path=.:$HOME/reveal.js " ..
+        "-V revealjs-url=$HOME/reveal.js -o '%s' '%s' && xdg-open '%s' &",
+        out, file, out
+    )
+    
+    print("Präsentation wird erstellt...")
+    os.execute(cmd)
+end, { desc = "Build Presentation" })
