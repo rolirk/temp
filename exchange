@@ -1,35 +1,4 @@
-vim.keymap.set('n', '<leader>p', function()
-    local file = vim.fn.expand('%') -- Die aktuelle .md Datei
-    local out = vim.fn.expand('%:r') .. '.html'
-    
-    -- 1. Suche nach reveal.js (lokal im Ordner oder global)
-    local local_reveal = vim.fn.getcwd() .. "/reveal.js"
-    local nix_reveal = "/etc/profiles/per-user/" .. os.getenv("USER") .. "/share/revealjs"
-    local reveal_url = ""
-
-    if vim.fn.isdirectory(local_reveal) == 1 then
-        reveal_url = "./reveal.js" -- Nutze den lokalen Ordner
-        print("Nutze lokales reveal.js...")
-    elseif vim.fn.isdirectory(nix_reveal) == 1 then
-        reveal_url = nix_reveal -- Nutze Nix-Installation
-        print("Nutze Nix reveal.js...")
-    else
-        reveal_url = "https://unpkg.com/reveal.js/" -- Fallback auf Internet
-        print("Kein lokales reveal.js gefunden, nutze Online-Quelle...")
-    end
-
-    -- 2. Pandoc Befehl zusammenbauen
-    -- --embed-resources packt alles in eine Datei (Bilder, JS, CSS)
-    local cmd = string.format(
-        "pandoc -t revealjs --standalone --embed-resources --resource-path=. " ..
-        "-V revealjs-url=%s -o '%s' '%s'",
-        reveal_url, out, file
-    )
-
-    -- 3. Ausführen
-    print("Präsentation wird generiert...")
-    vim.fn.system(cmd)
-    
-    -- 4. Öffnen (unter GNOME/NixOS meist xdg-open)
-    vim.cmd('silent !xdg-open ' .. out)
-end, { desc = "Build Reveal.js Slides" })
+Error in /home/ro/.config/nvim/init.lua:                                                                                                               
+E5113: Lua chunk: /home/ro/.config/nvim/init.lua:143: attempt to call a nil value                                                                      
+stack traceback:                                                                                                                                       
+        /home/ro/.config/nvim/init.lua:143: in main chunk  
