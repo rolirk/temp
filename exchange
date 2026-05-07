@@ -1,1 +1,4 @@
-vim.keymap.set('n', '<leader>p', ':!pandoc -t revealjs -s --embed-resources -V revealjs-url=https://unpkg.com/reveal.js/ -o %:r.html % && xdg-open %:r.html &<CR>', { silent = true })
+Error in /home/ro/.config/nvim/init.lua:                                                                                                               
+E5113: Lua chunk: /home/ro/.config/nvim/init.lua:109: attempt to call a nil value                                                                      
+stack traceback:                                                                                                                                       
+        /home/ro/.config/nvim/init.lua:109: in main chunk     
